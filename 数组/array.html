@@ -57,7 +57,7 @@
                 }
 
                 if (this.size === this.data.length) {
-                    resize(2*data.)
+                    this._resize(2*this.data.length)
                 }
 
 
@@ -69,6 +69,16 @@
                 this.size++;
             }
 
+            _resize(newCapacity){
+               let newData= new Array(newCapacity);
+                for (let i = 0; i < this.size; i++) {
+                    newData[i]=this.data[i]
+                }
+                
+                this.data=newData
+  
+  
+            }
             /**
              * 获取index位置元素
              **/
@@ -116,6 +126,11 @@
                     this.data[i - 1] = this.data[i]
                 }
                 this.size--;
+
+                if(this.size===this.data.length/4 && this.data.length/2!=0){ //laze
+                   
+                    this._resize(this.data.length/2)
+                }
                 return temp;
             }
 
@@ -136,7 +151,7 @@
                 }
             }
             toString() {
-                let res = "数组有" + this.size + "个元素，容量为" + this.getCapacity();
+                let res = "数组有" + this.size + "个元素，容量为" + this.data.length;
                 res += "\n"
                 for (let i = 0; i < this.size; i++) {
                     res += this.data[i];
@@ -149,13 +164,23 @@
 
         }
 
-        let arr = new myArray(20);
+        let arr = new myArray();
         for (let i = 0; i < 10; i++) {
             arr.addlast(i)
         }
         arr.toString()
 
-        arr.removeElement(9)
+        arr.addfirst(111);
+        arr.add(3,55)
+        arr.toString()
+
+        arr.remove(2);
+        arr.toString()
+
+        arr.remove(0);
+        arr.toString()
+
+        arr.remove(0);
         arr.toString()
     </script>
 </head>
