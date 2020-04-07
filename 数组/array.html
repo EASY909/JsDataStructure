@@ -31,7 +31,7 @@
              * 
              * 向最后添加元素
              */
-            addlast(e) {
+            addLast(e) {
                 // if (size === this.data.length) {
                 //     throw new Error("addlast失败，数组满了")
                 // }
@@ -57,7 +57,7 @@
                 }
 
                 if (this.size === this.data.length) {
-                    this._resize(2*this.data.length)
+                    this._resize(2 * this.data.length)
                 }
 
 
@@ -69,15 +69,15 @@
                 this.size++;
             }
 
-            _resize(newCapacity){
-               let newData= new Array(newCapacity);
+            _resize(newCapacity) {
+                let newData = new Array(newCapacity);
                 for (let i = 0; i < this.size; i++) {
-                    newData[i]=this.data[i]
+                    newData[i] = this.data[i]
                 }
-                
-                this.data=newData
-  
-  
+
+                this.data = newData
+
+
             }
             /**
              * 获取index位置元素
@@ -89,6 +89,13 @@
                 return this.data[index]
             }
 
+            getLast() {
+                return this.get(this.size - 1)
+            }
+
+            getFirst() {
+                return this.get(0)
+            }
             set(index, e) {
                 if (index < 0 || index >= this.size) {
                     throw new Error("set失败，下标不对")
@@ -127,9 +134,9 @@
                 }
                 this.size--;
 
-                if(this.size===this.data.length/4 && this.data.length/2!=0){ //laze
-                   
-                    this._resize(this.data.length/2)
+                if (this.size === this.data.length / 4 && this.data.length / 2 != 0) { //laze
+
+                    this._resize(this.data.length / 2)
                 }
                 return temp;
             }
@@ -171,7 +178,7 @@
         arr.toString()
 
         arr.addfirst(111);
-        arr.add(3,55)
+        arr.add(3, 55)
         arr.toString()
 
         arr.remove(2);

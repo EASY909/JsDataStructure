@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组队列</title>
+    <script src="array.js"></script>
+    <script>
+        class ArrayQueue extends myArray {
+            constructor(capacity) {
+                super(capacity)
+            }
+
+            getSize() {
+                return super.getSiz();
+            }
+
+            isEmpty() {
+                return super.isEmpty();
+            }
+
+            getCapacity() {
+                return super.getCapacity()
+            }
+
+            enqueue(e) {
+                super.addLast(e)
+            }
+
+            dequeue() {
+                return super.removeFirst()
+            }
+
+            getFront() {
+                return super.getFirst()
+            }
+
+            toString() {
+                let res = "数组队列：front[";
+                for (let i = 0; i < super.getSize(); i++) {
+                    res += super.get(i);
+                    if (i != super.getSize() - 1) {
+                        res += ", "
+                    }
+                }
+                res += "] tail"
+                console.log(res)
+            }
+        }
+
+        let queue = new ArrayQueue();
+        for (let i = 0; i < 10; i++) {
+            queue.enqueue(i);
+            queue.toString()
+
+            if(i%3==2){
+                queue.dequeue();
+                queue.toString()
+            }
+        }
+
+
+       
+       
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

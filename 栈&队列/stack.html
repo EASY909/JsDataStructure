@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栈</title>
+    <script src="array.js"></script>
+    <script>
+        class Stack extends myArray {
+            constructor(capacity) {
+                super(capacity)
+
+            }
+
+            getSize() {
+                return super.getSize();
+            }
+
+            isEmpty() {
+                return super.isEmpty();
+            }
+
+            getCapacity() {
+                return super.getCapacity();
+            }
+
+            push(e) {
+                super.addLast(e)
+            }
+
+            pop() {
+                return super.removeLast()
+            }
+
+            peek() {
+                return super.getLast()
+            }
+
+            toString() {
+                let res = "stack:[";
+
+                for (let i = 0; i < super.getSize(); i++) {
+                    res += super.get(i);
+
+                    if (i != super.getSize() - 1) {
+                        res += ", "
+                    }
+
+                }
+                res += "] top"
+                console.log(res)
+            }
+        }
+
+        let stack = new Stack();
+        for (let i = 0; i < 5; i++) {
+            stack.push(i)
+        }
+        stack.toString()
+
+        stack.pop()
+        stack.toString()
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
