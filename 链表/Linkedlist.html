@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链表</title>
+    <script>
+        class Node {
+            constructor(e, next) {
+                this.e = e;
+                this.next = next;
+            }
+
+            toString() {
+                return this.e.toString()
+            }
+        }
+
+        class LinkList {
+            constructor() {
+                this.size = 0;
+                this.dummyHead = new Node(null, null);
+            }
+
+            getSize() {
+                return this.size;
+            }
+
+            isEmpty() {
+                return this.size === 0;
+            }
+
+
+
+            //中间插入
+            add(index, e) {
+                if (index < 0 || index > this.size) {
+                    throw new Error("索引越界")
+                }
+
+
+                let prev = this.dummyHead;
+                for (let i = 0; i < index; i++)
+                    prev = prev.next;
+
+                prev.next = new Node(e, prev.next);
+                this.size++;
+
+            }
+
+            //链表头添加元素
+            addFirst(e) {
+                // this.head = new Node(e, this.head);
+                // this.size++;
+                this.add(0, e)
+            }
+
+            addLast(e) {
+                this.add(this.size, e)
+            }
+
+            get(index) {
+                if (index < 0 || index > this.size) {
+                    throw new Error("索引越界")
+                }
+
+                let cur = this.dummyHead.next;
+                for (let i = 0; i < index; i++)
+                    cur = cur.next;
+
+                return cur.e;
+
+            }
+
+            getFirst() {
+                return this.get(0)
+            }
+
+            getLast() {
+                return this.get(this.size - 1)
+            }
+
+            //修改链表index元素
+            set(index, e) {
+                if (index < 0 || index > this.size) {
+                    throw new Error("索引越界")
+                }
+
+                let cur = this.dummyHead.next;
+
+                for (let i = 0; i < index; i++)
+                    cur = cur.next;
+
+                cur.e = e;
+            }
+
+            cotains(e) {
+                let cur = this.dummyHead.next;
+
+                while (cur != null) {
+                    if (cur.e == e) {
+                        return true;
+                    }
+
+                    cur = cur.next;
+                }
+
+                return false
+            }
+
+            toString() {
+                let res = "";
+
+                let cur = this.dummyHead.next;
+                while (cur != null) {
+                    res += cur + "->"
+                    cur = cur.next;
+                }
+                res+=" null"
+
+                console.log(res)
+            }
+        }
+        let linkList = new LinkList()
+
+        for (let i = 0; i < 5; i++) {
+            linkList.addFirst(i)
+            linkList.toString()
+        }
+        linkList.add(2,666)
+        linkList.toString()
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

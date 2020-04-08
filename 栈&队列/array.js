@@ -128,7 +128,7 @@ class myArray {
         }
         this.size--;
 
-        if (this.size === this.data.length / 4 && this.data.length / 2 != 0) { //laze
+        if (this.size === parseInt(this.data.length / 4) && this.data.length / 2 != 0) { //laze
 
             this._resize(this.data.length / 2)
         }

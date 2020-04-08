@@ -17,6 +17,7 @@
             }
 
             getSize() {
+
                 return this.size;
             }
 
@@ -40,6 +41,7 @@
                 /**
                  * 直接调用add()方法
                  */
+
                 this.add(this.size, e)
             }
 
@@ -134,7 +136,7 @@
                 }
                 this.size--;
 
-                if (this.size === this.data.length / 4 && this.data.length / 2 != 0) { //laze
+                if (this.size === parseInt(this.data.length / 4) && this.data.length / 2 != 0) { //laze
 
                     this._resize(this.data.length / 2)
                 }
@@ -170,24 +172,29 @@
             }
 
         }
-
         let arr = new myArray();
         for (let i = 0; i < 10; i++) {
-            arr.addlast(i)
+            arr.addLast(i)
         }
         arr.toString()
 
-        arr.addfirst(111);
-        arr.add(3, 55)
+        // arr.addfirst(111);
+        // arr.add(3, 55)
         arr.toString()
 
         arr.remove(2);
-        arr.toString()
+        // arr.toString()
 
         arr.remove(0);
-        arr.toString()
+        // arr.toString()
 
         arr.remove(0);
+        arr.remove(0);
+        arr.remove(0);
+        arr.remove(0);
+        arr.remove(0);
+        arr.remove(0);
+          
         arr.toString()
     </script>
 </head>
