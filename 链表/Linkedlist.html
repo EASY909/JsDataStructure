@@ -109,7 +109,30 @@
                 return false
             }
 
+            remove(index) {
+                if (index < 0 || index > this.size) {
+                    throw new Error("索引越界")
+                }
+                let prev = this.dummyHead;
+                for (let i = 0; i < index; i++)
+                    prev = prev.next;
+
+                let retNode = prev.next;
+                prev.next = retNode.next;
+                retNode.next = null;
+                this.size--;
+
+                return retNode.e;
+            }
+
+            removeFirst() {
+                this.remove(0)
+            }
+            removeLast() {
+                this.remove(this.size - 1)
+            }
             toString() {
+                console.log("111111111111")
                 let res = "";
 
                 let cur = this.dummyHead.next;
@@ -117,20 +140,72 @@
                     res += cur + "->"
                     cur = cur.next;
                 }
-                res+=" null"
+                res += " null"
 
+                return res
                 console.log(res)
             }
         }
-        let linkList = new LinkList()
 
-        for (let i = 0; i < 5; i++) {
-            linkList.addFirst(i)
-            linkList.toString()
+
+        // let linkList = new LinkList()
+
+        // for (let i = 0; i < 5; i++) {
+        //     linkList.addFirst(i)
+        //     linkList.toString()
+        // }
+        // linkList.add(2, 666)
+        // linkList.toString()
+
+        // linkList.remove(2)
+        // linkList.toString()
+
+        // linkList.removeFirst()
+        // linkList.toString()
+
+        // linkList.removeLast()
+        // linkList.toString()
+
+
+        class LinkListStack {
+            constructor() {
+                this.list = new LinkList()
+            }
+
+            getSize() {
+                return this.list.getSize();
+            }
+
+            isEmpty() {
+                return this.list.isEmpty();
+            }
+
+            push(e) {
+                this.list.addFirst(e)
+            }
+
+            pop() {
+                return this.list.removeFirst()
+            }
+
+            peek() {
+                return this.list.getFirst()
+            }
+
+            toString() {
+                let res = "stack:top ";
+                res += this.list.toString();
+                return res
+            }
         }
-        linkList.add(2,666)
-        linkList.toString()
 
+        let stack = new LinkListStack();
+        for (let i = 0; i < 5; i++) {
+            stack.push(i)
+           console.log(stack.toString()) 
+        }
+        stack.pop()
+        console.log(stack.toString()) 
     </script>
 </head>
 

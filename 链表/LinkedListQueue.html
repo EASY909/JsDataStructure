@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class Node {
+            constructor(e, next) {
+                this.e = e;
+                this.next = next;
+            }
+
+            toString() {
+                return this.e.toString()
+            }
+        }
+
+        class LinkedListQueue {
+            constructor() {
+                this.head = null;
+                this.tail = null;
+                this.size = 0;
+            }
+
+            getSize() {
+                return this.size;
+            }
+            isEmpty() {
+                return this.size === 0;
+            }
+
+            enqueue(e) {
+                if (this.tail == null) {
+                    this.tail = new Node(e, null)
+                    this.head = this.tail;
+                } else {
+                    this.tail.next = new Node(e, null);
+                    this.tail = this.tail.next;
+                }
+
+                this.size++
+            }
+
+            dequeue() {
+                if (this.isEmpty())
+                    throw new Error("队列为空")
+
+                let retNode = this.head;
+
+                this.head = this.head.next;
+
+                retNode.next = null;
+                if (this.head == null) {
+                    this.tail = null;
+                }
+                this.size--;
+                return retNode.e;
+            }
+
+            getFront() {
+                if (isEmpty())
+                    throw new Error("队列为空")
+
+                return this.head.e;
+            }
+
+            toString() {
+                let res = "queue : front ";
+
+                let cur = this.head;
+                while (cur != null) {
+                    res += cur + "->"
+                    cur = cur.next;
+                }
+                res += " null"
+
+                return res
+                // console.log(res)
+            }
+        }
+
+        let queue = new LinkedListQueue();
+        for (let i = 0; i < 10; i++) {
+            queue.enqueue(i);
+            console.log(queue.toString());
+
+            if (i % 3 == 2) {
+                queue.dequeue();
+                console.log(queue.toString());
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
