@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二分搜索树</title>
+    <script>
+        class Node{
+            constructor(e){
+                this.e=e;
+                this.left=null;
+                this.right=null;
+            }
+        }
+        class BST{
+            constructor(){
+                this.root=null;
+                this.size=0
+            }
+
+            size(){
+                return this.size;
+            }
+            
+            isEmpty(){
+                return this.size===0
+            }
+
+            add(e){
+                if(this.root==null){
+                    this.root=new Node(e);
+                    this.size++;    
+                }else{
+                    padd(e,this.root)
+                }
+            }
+            padd(e,node){
+                if(node==null){
+                    this.size++;
+                    return new Node(e)
+                }
+
+                if(e<node.e){
+                    node.left=padd(e,node.left)
+                }else if(e>node.e){
+                    node.right=padd(e,node.right)
+                }
+                return node;
+                // if(e==node.e){
+                //     return
+                // }else if(e<node.e&&node.left==null){
+                //     node.left=new Node(e);
+                //     this.size++;
+                //     return
+                // }else if(e>node.e&&node.right==null){
+                //     node.right=new Node(e);
+                //     this.size++;
+                //     return
+                // }
+
+                // if(e<node.e){
+                //     padd(e,node.left)
+                // }else{
+                //     padd(e,node.right)
+                // }
+            }
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
