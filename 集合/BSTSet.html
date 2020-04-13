@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./BST.js"></script>
+    <script>
+        class BSTSet {
+            constructor() {
+                this.bst = new BST()
+            }
+
+            getSize() {
+                //    return  this.bst.size();
+                return this.bst.getSize();
+            }
+
+            isEmpty() {
+                return this.bst.isEmpty()
+            }
+
+            add(e) {
+                this.bst.add(e);
+            }
+
+            contains(e) {
+                return this.bst.contains(e)
+            }
+
+            remove(e) {
+                this.bst.remove(e)
+            }
+        }
+
+        let arr = [1, 1, 2, 2, 3, 4, 5, 6]
+        let set = new BSTSet();
+
+        for (let i = 0; i < arr.length; i++) {
+            set.add(arr[i])
+        }
+        console.log(set.getSize());
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

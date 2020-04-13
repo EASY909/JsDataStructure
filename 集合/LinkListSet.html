@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./LinkList.js"></script>
+    <script>
+        class LinkListSet {
+            constructor() {
+                this.list = new LinkList();
+            }
+
+            getSize() {
+                return this.list.getSize()
+            }
+
+            isEmpty() {
+                return this.list.isEmpty();
+            }
+
+            cotains(e) {
+                return this.list.cotains(e);
+            }
+
+            add(e) {
+                if (!this.list.cotains(e)) {
+                    this.list.addFirst(e)
+                }
+            }
+
+            remove(e) {
+                this.list.removeElement(e)
+            }
+        }
+
+        let arr = [1, 1, 2, 2, 3, 4, 5, 6]
+        let set = new LinkListSet();
+
+        for (let i = 0; i < arr.length; i++) {
+            set.add(arr[i])
+        }
+        set.remove(1);
+        console.log(set.getSize());
+
+        /**
+         * @param {string[]} words
+         * @return {number}
+         */
+        var uniqueMorseRepresentations = function (words) {
+            let codes=[".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."];
+            let wordsSet=new Set();
+            for (let i = 0; i < words.length; i++) {
+                let res=""
+                for (let j = 0; j < words[i].length; j++) {
+                    res+=codes[words[i].charAt(j).charCodeAt()-'a'.charCodeAt()];
+                }
+                // console.log(res);
+                wordsSet.add(res)
+            }
+            return wordsSet.size
+        };
+        console.log('c'.charCodeAt()-'a'.charCodeAt());
+
+        uniqueMorseRepresentations(["gin", "zen", "gig", "msg"])
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -131,8 +131,24 @@
             removeLast() {
                 this.remove(this.size - 1)
             }
+
+            removeElement(e){
+                let prev=this.dummyHead;
+                while(prev.next!=null){
+                    if(prev.next.e==e){
+                        break;
+                    }
+                    prev=prev.next;
+                }
+
+                if(prev.next!=null){
+                    let delNode=prev.next;
+                    prev.next=delNode.next;
+                    delNode.next=null;
+                }
+            }
             toString() {
-                console.log("111111111111")
+                
                 let res = "";
 
                 let cur = this.dummyHead.next;
@@ -141,21 +157,21 @@
                     cur = cur.next;
                 }
                 res += " null"
-
-                return res
                 console.log(res)
+                return res
+                
             }
         }
 
 
-        // let linkList = new LinkList()
+        let linkList = new LinkList()
 
-        // for (let i = 0; i < 5; i++) {
-        //     linkList.addFirst(i)
-        //     linkList.toString()
-        // }
-        // linkList.add(2, 666)
-        // linkList.toString()
+        for (let i = 0; i < 5; i++) {
+            linkList.addFirst(i)
+            linkList.toString()
+        }
+        linkList.removeElement(2)
+        linkList.toString()
 
         // linkList.remove(2)
         // linkList.toString()
@@ -199,13 +215,13 @@
             }
         }
 
-        let stack = new LinkListStack();
-        for (let i = 0; i < 5; i++) {
-            stack.push(i)
-           console.log(stack.toString()) 
-        }
-        stack.pop()
-        console.log(stack.toString()) 
+        // let stack = new LinkListStack();
+        // for (let i = 0; i < 5; i++) {
+        //     stack.push(i)
+        //    console.log(stack.toString()) 
+        // }
+        // stack.pop()
+        // console.log(stack.toString()) 
     </script>
 </head>
 
