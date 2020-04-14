@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./BST.js"></script>
+    <script>
+        class MapNode {
+            constructor(key = null, value = null, left = null, right = null) {
+                this.key = key;
+                this.value = value
+                this.left = left;
+                this.right = right;
+            }
+        }
+        class BSTMap {
+            constructor() {
+                this.root = null;
+                this.size = 0;
+            }
+
+            getSize() {
+                return this.size;
+            }
+
+            isEmpty() {
+                return this.size === 0;
+            }
+
+            add(key, value) {
+                // this._add(key, value, this.root)
+                if (this.root == null) {
+                    this.root = new MapNode(key, value);
+                    this.size++;
+                } else {
+                    this._add(key, value, this.root)
+                }
+            }
+            _add(key, value, node) {
+                if (node == null) {
+                    this.size++;
+                    return new MapNode(key, value)
+                }
+
+                if (key < node.key) {
+                    node.left = this._add(key, value, node.left)
+                } else if (key > node.key) {
+                    node.right = this._add(key, value, node.right)
+                } else {
+                    node.value = value;
+                }
+                return node;
+                // if(e==node.e){
+                //     return
+                // }else if(e<node.e&&node.left==null){
+                //     node.left=new Node(e);
+                //     this.size++;
+                //     return
+                // }else if(e>node.e&&node.right==null){
+                //     node.right=new Node(e);
+                //     this.size++;
+                //     return
+                // }
+
+                // if(e<node.e){
+                //     padd(e,node.left)
+                // }else{
+                //     padd(e,node.right)
+                // }
+            }
+
+            _getNode(node, key) {
+                if (node == null) {
+                    return null;
+                }
+
+                if (node.key == key) {
+                    return node
+                } else if (key < node.key) {
+                    return this._getNode(node.left, key)
+                } else {
+                    return this._getNode(node.right, key)
+                }
+            }
+
+            contains(key) {
+                return _getNode(this.root, key) != null;
+            }
+
+            get(key) {
+                let node = this._getNode(this.root, key);
+                return node == null ? null : node.value
+            }
+
+            set(key, newValue) {
+                let node = this._getNode(this.root, key);
+                if (node == null) {
+                    throw new Error("不存在的节点")
+                }
+                node.value = newValue;
+            }
+
+            remove(key) {
+                let node = this._getNode(this.root, key);
+                if (node != null) {
+                    this.root = this._remove(this.root, key)
+                    return node.value;
+                }
+                return null;
+            }
+            _remove(node, key) {
+
+                if (node == null) {
+                    return null;
+                }
+
+                if (key < node.key) {
+                    node.left = _remove(node.left, key);
+
+                    return node;
+                } else if (key > node.key) {
+                    node.right = _remove(node.right, key);
+                    return node;
+                } else { //key==node.key
+                    //待删除节点左子树为空
+                    if (node.left == null) {
+                        let rightNode = node.right;
+                        node.right = null;
+                        this.size--;
+                        return rightNode;
+                    }
+                    //待删除节点右子树为空
+                    if (node.right == null) {
+                        let leftNode = node.left;
+                        node.left = null;
+                        this.size--;
+                        return leftNode;
+                    }
+
+                    //待删除节点左右子树都不空，找到待删除节点的右子树中的最小节点，用这个节点顶替待删除节点
+                    //或者找到待删除节点的左子树中的最大节点，用这个节点顶替待删除节点
+                    let successor = this.minmum(node.right);
+
+                    successor.right = this._removeMin(node.right);
+                    successor.left = node.left;
+
+                    node.left = null;
+                    node.right = null;
+
+                    return successor;
+                }
+            }
+        }
+
+        let arr = [{
+                key: "1",
+                value: "qc"
+            },
+            {
+                key: "2",
+                value: "wc"
+            },
+            {
+                key: "1",
+                value: "ec"
+            },
+        ]
+        let map = new BSTMap();
+
+        for (let i = 0; i < arr.length; i++) {
+            map.add(arr[i].key, arr[i].value)
+        }
+        // set.remove(1);
+        console.log(map.get("1"));
+        console.log(map.getSize());
+
+
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

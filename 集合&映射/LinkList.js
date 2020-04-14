@@ -137,8 +137,9 @@ class LinkList {
             let delNode=prev.next;
             prev.next=delNode.next;
             delNode.next=null;
+            this.size--;
         }
-        this.size--;
+       
     }
     toString() {
         

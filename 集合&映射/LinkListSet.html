@@ -44,26 +44,9 @@
         set.remove(1);
         console.log(set.getSize());
 
-        /**
-         * @param {string[]} words
-         * @return {number}
-         */
-        var uniqueMorseRepresentations = function (words) {
-            let codes=[".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."];
-            let wordsSet=new Set();
-            for (let i = 0; i < words.length; i++) {
-                let res=""
-                for (let j = 0; j < words[i].length; j++) {
-                    res+=codes[words[i].charAt(j).charCodeAt()-'a'.charCodeAt()];
-                }
-                // console.log(res);
-                wordsSet.add(res)
-            }
-            return wordsSet.size
-        };
-        console.log('c'.charCodeAt()-'a'.charCodeAt());
 
-        uniqueMorseRepresentations(["gin", "zen", "gig", "msg"])
+
+        
 
     </script>
 </head>

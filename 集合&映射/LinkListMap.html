@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./LinkList.js"></script>
+    <script>
+        class MapNode {
+            constructor(key = null, value = null, next = null) {
+                this.key = key;
+                this.value = value
+                this.next = next;
+            }
+
+            toString() {
+                return this.key.toString() + ":" + this.value.toString()
+            }
+        }
+        class LinkListMap {
+            constructor() {
+                this.dummyHead = new MapNode();
+                this.size = 0;
+            }
+
+            getSize() {
+                return this.size;
+            }
+
+            isEmpty() {
+                return this.size === 0;
+            }
+            _getNode(key) {
+                let cur = this.dummyHead.next;
+                while (cur != null) {
+                    if (cur.key == key) {
+                        return cur;
+                    }
+                    cur = cur.next;
+                }
+                return null;
+            }
+            contains(key) {
+                return this._getNode(key) != null;
+            }
+
+            get(key) {
+                let node = this._getNode(key);
+                return node == null ? null : node.value;
+            }
+
+            add(key, value) {
+                let node = this._getNode(key);
+                if (node == null) {
+                    this.dummyHead.next = new MapNode(key, value, this.dummyHead.next);
+                    this.size++;
+                } else {
+                    node.value = value;
+                }
+            }
+
+            set(key, newValue) {
+                let node = this._getNode(key);
+                if (node == null) {
+                    throw new Error("不存在的节点")
+                }
+                node.value = newValue;
+            }
+
+            remove(key) {
+                let prev = this.dummyHead;
+                while (prev.next != null) {
+                    if (prev.next.key == key) {
+                        break;
+                    }
+                    prev = prev.next;
+                }
+
+                if (prev.next != null) {
+                    let delNode = prev.next;
+                    prev.next = delNode.next;
+                    delNode.next = null;
+                    this.size--;
+                    return delNode.value;
+                }
+
+                return null;
+            }
+        }
+
+        let arr = [{
+                key: "1",
+                value: "qc"
+            },
+            {
+                key: "2",
+                value: "wc"
+            },
+            {
+                key: "1",
+                value: "ec"
+            },
+        ]
+        let map = new LinkListMap();
+
+        for (let i = 0; i < arr.length; i++) {
+            map.add(arr[i].key, arr[i].value)
+        }
+        // set.remove(1);
+        console.log(map.get("1"));
+        console.log(map.getSize());
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

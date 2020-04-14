@@ -208,7 +208,7 @@ class BST {
     }
 
     remove(e) {
-        this.root = (this.root, e)
+        this.root = this._remove(this.root, e)
     }
     _remove(node, e) {
 
