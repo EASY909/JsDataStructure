@@ -33,7 +33,7 @@ class myArray {
         /**
          * 直接调用add()方法
          */
-
+       
         this.add(this.size, e)
     }
 
@@ -129,14 +129,15 @@ class myArray {
         this.size--;
 
         if (this.size === parseInt(this.data.length / 4) && this.data.length / 2 != 0) { //laze
-
-            this._resize(this.data.length / 2)
+            console.log(this.data.length);
+            this._resize(parseInt(this.data.length / 2))
         }
         return temp;
     }
 
 
     removeFirst() {
+
         this.remove(0)
     }
 
@@ -152,7 +153,18 @@ class myArray {
         }
     }
 
-    
+    /*
+     *交换两个位置的元素
+     */
+    swap(i,j){
+        if(i<0||i>=this.size || j<0 || j>=this.size){
+            throw new Error("i<0||i>=this.size || j<0 || j>=this.size")
+        }
+        let temp=this.data[i];
+        this.data[i]=this.data[j];
+        this.data[j]=temp;
+    }
+
     toString() {
         let res = "数组有" + this.size + "个元素，容量为" + this.data.length;
         res += "\n"
