@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+        import MaxHeap from "./maxHeap.js"
+        class PriorityQueue{
+            constructor(){
+               this.maxHeap=new MaxHeap()
+            }
+
+            getSize(){
+                return this.maxHeap.size();
+            }
+
+            isEmpty(){
+                return this.maxHeap.isEmpty();
+            }
+
+            getFront(){
+                return this.maxHeap.findMax();
+            }
+
+            enqueue(e){
+                this.maxHeap.add(e);
+            }
+
+            dequeue(){
+                this.maxHeap.extractMax();
+            }
+        }
+
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

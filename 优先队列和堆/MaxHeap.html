@@ -8,9 +8,17 @@
     <script src="./array.js"></script>
     <script>
         class MaxHeap {
-            constructor(capacity = 10) {
-                this.data = new myArray(capacity);
-                this.size = 0;
+            constructor(capacity) {
+                 //将任意数组转换成堆
+                if (Object.prototype.toString.call(capacity) === "[object Array]") {
+                    this.data = new myArray(capacity);
+                    for (let i = this.parent(capacity.length - 1); i >= 0; i--) {
+                        this.siftDown(i)
+                    }
+                } else {
+                    this.data = new myArray(capacity);
+                }
+
             }
             size() {
                 return this.data.getSize();
@@ -61,7 +69,7 @@
                 let e = this.findMax();
                 this.data.swap(0, this.data.getSize() - 1)
                 this.data.removeLast();
-            
+
                 this.siftDown(0)
 
                 return e;
@@ -83,17 +91,27 @@
                     k = j;
                 }
             }
+
+            //取出最大元素，替换成e
+            replace(e) {
+                let ret = this.findMax();
+                this.data.set(0, e);
+                this.siftDown(0);
+                return ret;
+            }
+
+  
         }
 
-        let maxheap = new MaxHeap();
-
+        let maxheap = new MaxHeap([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]);
+        console.log(maxheap.size());
         let n = 100;
-        for (let i = 0; i < n; i++) {
-            maxheap.add(Math.round(Math.random()*100))
-        }
-     
+        // for (let i = 0; i < n; i++) {
+        //     maxheap.add(Math.round(Math.random() * 100))
+        // }
+
         let arr = [];
-        for (let i = 0; i < n; i++) {
+        for (let i = 0; i < 20; i++) {
             arr.push(maxheap.extractMax())
         }
 
@@ -103,6 +121,8 @@
         //     }
         // }
         console.log(arr);
+
+
     </script>
 </head>
 

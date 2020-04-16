@@ -1,11 +1,18 @@
-class myArray {
+export default class myArray {
     /**
      * @param {数组长度，默认10} capacity 
      * @param {元素个数} size 
      */
     constructor(capacity = 10) {
-        this.data = new Array(capacity);
-        this.size = 0;
+        if(Object.prototype.toString.call(capacity)==="[object Array]"){
+            this.data = capacity;
+            this.size=capacity.length;
+        }else{
+            this.data = new Array(capacity);
+            this.size = 0;
+        }
+        
+       
     }
 
     getSize() {
@@ -129,7 +136,7 @@ class myArray {
         this.size--;
 
         if (this.size === parseInt(this.data.length / 4) && this.data.length / 2 != 0) { //laze
-            console.log(this.data.length);
+           
             this._resize(parseInt(this.data.length / 2))
         }
         return temp;
