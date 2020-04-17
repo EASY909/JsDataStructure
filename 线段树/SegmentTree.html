@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class SegmentTree {
+            constructor(arr, merge) {
+                this.data = new Array(arr.length);
+                this.merge = merge;
+                for (let i = 0; i < arr.length; i++) {
+                    this.data[i] = arr[i]
+                }
+
+                this.tree = new Array(4 * arr.length);
+
+                this.buildSegmentTree(0, 0, this.data.length - 1)
+            }
+            //在treeIndex位置创建[l,r]的线段树
+            buildSegmentTree(treeIndex, l, r) {
+                if (l == r) {
+                    this.tree[treeIndex] = data[l];
+
+                    return
+                }
+
+                let leftChildIndex = this.leftChild(treeIndex);
+                let rightChildIndex = this.rightChild(treeIndex);
+
+                let mid = l + parseInt((r - l) / 2);
+                this.buildSegmentTree(leftChildIndex, l, mid);
+                this.buildSegmentTree(rightChildIndex, mid + 1, r);
+
+                this.tree[treeIndex] = this.merge(this.tree[leftChildIndex], this.tree[rightChildIndex]);
+            }
+
+            get(index) {
+                if (index < 0 || index >= this.data.length) {
+                    throw new Error("下标越界")
+                }
+                return this.data[index]
+            }
+
+            getSize() {
+                return this.data.length;
+            }
+
+            leftChild(index) { //返回index左孩子索引
+                return index * 2 + 1
+            }
+
+            rightChild(index) {
+                return index * 2 + 2
+            }
+
+            toString() {
+                let res = "[";
+                for (let i = 0; i < this.tree.length; i++) {
+                    if (this.tree[i] != null) {
+                        res += this.tree[i]
+                    } else {
+                        res += "null"
+                    }
+                    if (i != this.tree.length - 1) {
+                        res+=","
+                    } else {
+                        res+="]"
+                    }
+                }
+
+                console.log(res);
+                return res
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
