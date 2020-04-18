@@ -21,7 +21,7 @@
             //在treeIndex位置创建[l,r]的线段树
             buildSegmentTree(treeIndex, l, r) {
                 if (l == r) {
-                    this.tree[treeIndex] = data[l];
+                    this.tree[treeIndex] = this.data[l];
 
                     return
                 }
@@ -55,6 +55,61 @@
                 return index * 2 + 2
             }
 
+            query(queryL, queryR) {
+                if (queryL < 0 || queryL >= this.data.length ||
+                    queryR < 0 || queryR >= this.data.length || queryL > queryR) {
+                    throw new Error("下标越界")
+                }
+
+                return this._query(0, 0, this.data.length - 1, queryL, queryR)
+            }
+
+            _query(treeIndex, l, r, queryL, queryR) {
+                if (l == queryL && r == queryR) {
+                    return this.tree[treeIndex]
+                }
+                let mid = l + parseInt((r - l) / 2);
+                let leftChildIndex = this.leftChild(treeIndex);
+                let rightChildIndex = this.rightChild(treeIndex);
+
+                if (queryL >= mid + 1) {
+                    return this._query(rightChildIndex, mid + 1, r, queryL, queryR)
+                } else if (queryR <= mid + 1) {
+                    return this._query(leftChildIndex, l, mid, queryL, queryR)
+                }
+
+                let leftResult = this._query(leftChildIndex, l, mid, queryL, mid);
+                let rightResult = this._query(rightChildIndex, mid + 1, r, mid + 1, queryR);
+
+                return this.merge(leftResult, rightResult)
+
+            }
+
+            //更新
+            set(index, e) {
+                if (index < 0 || index >= this.data.length) {
+                    throw new Error("下标越界")
+                }
+                this.data[index]=e;
+                this._set(0,0,this.data.length-1,e);
+            }
+            _set(treeIndex,l,r,index,e){
+                if(l==r){
+                    this.tree[treeIndex]=e;
+                    return;
+                }
+                let mid = l + parseInt((r - l) / 2);
+                let leftChildIndex = this.leftChild(treeIndex);
+                let rightChildIndex = this.rightChild(treeIndex);
+                if(index>=mid+1){
+                    this._set(rightChildIndex,mid+1,r,index,e)
+                }else{
+                    this._set(leftChildIndex,l,mid,index,e)
+                }
+
+                this.tree[treeIndex]=this.merge(this.tree[leftChildIndex],this.tree[rightChildIndex])
+            }
+
             toString() {
                 let res = "[";
                 for (let i = 0; i < this.tree.length; i++) {
@@ -64,9 +119,9 @@
                         res += "null"
                     }
                     if (i != this.tree.length - 1) {
-                        res+=","
+                        res += ","
                     } else {
-                        res+="]"
+                        res += "]"
                     }
                 }
 
@@ -74,6 +129,13 @@
                 return res
             }
         }
+        let nums = [-2, 0, 3, -5, 2, -1];
+        let segment = new SegmentTree(nums, function (a, b) {
+            return a + b;
+        })
+
+        console.log(segment.query(0, 5));
+        segment.toString()
     </script>
 </head>
 
