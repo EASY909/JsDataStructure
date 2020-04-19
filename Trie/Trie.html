@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class Node {
+            constructor() {
+                this.isWord = false;
+                this.next = new Map();
+            }
+        }
+        class Trie {
+            constructor() {
+                this.root = new Node();
+                this.size = 0;
+            }
+
+            getSize() {
+                return this.size;
+            }
+
+            add(word) {
+                let cur = this.root;
+               
+                for (let i = 0; i < word.length; i++) {
+                    let c = word.charAt(i)
+                    if (cur.next.get(c) == undefined) {
+                        cur.next.set(c, new Node())
+                    }
+                    cur = cur.next.get(c)
+                }
+                if (!cur.isWord) {
+                    cur.isWord = true;
+                    this.size++;
+                }
+
+            }
+
+            contains(word) {
+                let cur = this.root;
+                for (let i = 0; i < word.length; i++) {
+                    let c = word.charAt(i)
+                    if (cur.next.get(c) == undefined) {
+                        return false
+                    }
+                    cur = cur.next.get(c)
+                }
+                return cur.isWord;
+            }
+
+            isPrefix(prefix){
+                let cur = this.root;
+                for (let i = 0; i < prefix.length; i++) {
+                    let c = prefix.charAt(i)
+                    if (cur.next.get(c) == undefined) {
+                        return false
+                    }
+                    cur = cur.next.get(c)
+                }
+                return true;
+            }
+        }
+
+
+        let trie = new Trie();
+
+        let arr = ["apple", "banana", "panda", "map", "hello", "word"];
+
+
+        for (let i = 0; i < arr.length; i++) {
+            trie.add(arr[i])
+
+        }
+        console.log(trie.contains("word"));
+        
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
