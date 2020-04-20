@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class UnionFind1 {
+            constructor(size) {
+                this.id = new Array(size);
+                for (let i = 0; i < size; i++) {
+                    this.id[i] = i;
+
+                }
+            }
+
+            getSize() {
+                return this.id.length;
+            }
+
+            find(p) {
+                if (p < 0 && p >= this.id.length) {
+                    throw new Error("下标越界")
+                }
+                return this.id[p]
+            }
+
+            isConnected(p, q) {
+                return this.find(p) === this.find(q)
+            }
+
+            unionElements(p, q) {
+                let pId = this.find(p),
+                    qId = this.find(q);
+
+                if (pId === qId) return;
+
+                for (let i = 0; i < this.id.length; i++) {
+                    if (this.id[i] === pId) {
+                        this.id[i] = qId
+                    }
+                }
+            }
+        }
+
+        class UnionFind2 {
+            constructor(size) {
+                this.parent = new Array(size);
+                for (let i = 0; i < size; i++) {
+                    this.parent[i] = i;
+                }
+            }
+
+            getSize() {
+                return this.parent.length;
+            }
+
+            find(p) {
+                if (p < 0 && p >= this.id.length) {
+                    throw new Error("下标越界")
+                }
+                while (p != this.parent[p]) {
+                    p = this.parent[p];
+                }
+
+                return p;
+            }
+
+            isConnected(p, q) {
+                return this.find(p) === this.find(q)
+            }
+
+            unionElements(p, q) {
+                let pRoot = this.find(p),
+                    qRoot = this.find(q);
+
+                if (pRoot === qRoot ) return;
+
+                this.parent[pRoot]=qRoot;
+                
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
