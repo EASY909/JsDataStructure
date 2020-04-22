@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        class Node {
+            constructor(key = null, value = null, left = null, right = null) {
+                this.key = key;
+                this.value = value;
+                this.left = null;
+                this.right = null;
+                this.height = 1;
+            }
+        }
+        class AVLTree {
+            constructor() {
+                this.root = null;
+                this.size = 0
+            }
+
+            getSize() {
+                return this.size;
+            }
+
+            _getHeight(node) {
+                if (node == null) {
+                    return 0;
+                }
+                return node.height;
+            }
+
+            _getBalanceFactor(node) {
+                if (node == null) return 0;
+
+                return this._getHeight(node.left) - this._getHeight(node.right);
+            }
+            isEmpty() {
+                return this.size === 0
+            }
+
+            add(key, value) {
+                if (this.root == null) {
+                    this.root = new Node(key, value);
+                    this.size++;
+                } else {
+                    
+                    this._add(key,value, this.root)
+                }
+               
+            }
+            _add(key, value, node) {
+               
+                if (node == null) {
+                    this.size++;
+                 
+                    return new Node(key, value)
+                }
+
+               
+                if (key < node.key) {
+                    node.left = this._add(key, value, node.left)
+                } else if (key > node.key) {
+                    node.right = this._add(key, value, node.right)
+                } else {
+                    node.value = value;
+                }
+
+                //更新height
+                node.height = 1 + Math.max(this._getHeight(node.left), this._getHeight(node.right))
+               
+                //平衡因子
+                let balancefactor = this._getBalanceFactor(node);
+                if (Math.abs(balancefactor) > 1) {
+                    console.log("平衡因子：" + balancefactor);
+                }
+                
+
+                //维护平衡
+                return node;
+
+
+            }
+
+            isBST() {
+                let keys = [];
+                this._inOrder(this.root, keys);
+                for (let i = 0; i < keys.length; i++) {
+                    if (keys[i] > keys[i + 1]) {
+                        return false
+                    }
+                }
+                return true
+            }
+            _inOrder(node, keys) {
+                if (node == null) {
+                    return null
+                }
+               
+                this._inOrder(node.left,keys)
+                keys.push(node.key)
+                this._inOrder(node.right,keys);
+            }
+
+            isBalanced(){
+                return this._isBalanced(this.root);
+            }
+            _isBalanced(node){
+                if(node==null){
+                    return true;
+                }
+
+                let balancefactor=this._getBalanceFactor(node);
+                if(Math.abs(balancefactor)>1){
+                    return false;
+                }
+
+                return this._isBalanced(node.left)&&this._isBalanced(node.right)
+            }
+            contains(e) {
+                _contains(this.root, e)
+            }
+            _contains(node, e) {
+                if (node == null) {
+                    return false
+                }
+
+                if (node.e == e) {
+                    return true;
+                } else if (node.e > e) {
+                    _contains(node.left, e)
+                } else {
+                    _contains(node.right, e)
+                }
+            }
+
+            levelOrder() {
+                let queue = []; //每次出队时，判断其左右孩子是不是为空
+
+                queue.push(this.root)
+                while (queue.length != 0) {
+                    let delet = queue.shift();
+                    console.log(delet.e);
+
+                    if (delet.left != null) {
+                        queue.push(delet.left)
+                    }
+                    if (delet.right != null) {
+                        queue.push(delet.right)
+                    }
+                }
+            }
+
+            minmum() {
+                if (this.size == 0) {
+                    throw new Error("二叉树节点为0")
+                }
+
+                return this._minmum(this.root).e
+            }
+            _minmum(node) {
+                let cur = node;
+
+                while (cur.left != null) {
+                    cur = cur.left;
+                }
+
+                return cur;
+            }
+
+            maxmum() {
+                if (this.size == 0) {
+                    throw new Error("二叉树节点为0")
+                }
+
+                return this._maxmum(this.root).e
+            }
+            _maxmum(node) {
+                let cur = node;
+
+                while (cur.right != null) {
+                    cur = cur.right;
+                }
+
+                return cur;
+            }
+
+            removeMin() {
+                let min = this.minmum();
+
+
+                this.root = this._removeMin(this.root);
+
+
+                return min;
+            }
+
+            _removeMin(node) {
+                if (node.left == null) {
+                    let rightNode = node.right;
+                    node.right = null;
+                    this.size--;
+                    return rightNode;
+                }
+                node.left = this._removeMin(node.left);
+
+                return node;
+
+            }
+
+            removeMax() {
+                let max = this.maxmum();
+
+                this.root = this._removeMax(this.root);
+                return max;
+            }
+
+            _removeMax(node) {
+                if (node.right == null) {
+                    let leftNode = node.left;
+                    node.left = null;
+                    this.size--;
+                    return leftNode;
+                }
+                node.right = this._removeMax(node.right);
+
+                return node;
+
+            }
+
+            remove(e) {
+                this.root = this._remove(this.root, e)
+            }
+            _remove(node, e) {
+
+                if (node == null) {
+                    return null;
+                }
+
+                if (e < node.e) {
+                    node.left = _remove(node.left, e);
+
+                    return node;
+                } else if (e > node.e) {
+                    node.right = _remove(node.right, e);
+
+                    return node;
+                } else { //e==node.e
+                    //待删除节点左子树为空
+                    if (node.left == null) {
+                        let rightNode = node.right;
+                        node.right = null;
+                        this.size--;
+                        return rightNode;
+                    }
+                    //待删除节点右子树为空
+                    if (node.right == null) {
+                        let leftNode = node.left;
+                        node.left = null;
+                        this.size--;
+                        return leftNode;
+                    }
+
+                    //待删除节点左右子树都不空，找到待删除节点的右子树中的最小节点，用这个节点顶替待删除节点
+                    //或者找到待删除节点的左子树中的最大节点，用这个节点顶替待删除节点
+                    let successor = this.minmum(node.right);
+
+                    successor.right = this._removeMin(node.right);
+                    successor.left = node.left;
+
+                    node.left = null;
+                    node.right = null;
+
+                    return successor;
+                }
+            }
+
+        }
+
+
+        let nums = [1, 2, 3, 4, 6, 5]
+
+        let avltree = new AVLTree();
+
+        for (let i = 0; i < nums.length; i++) {
+            avltree.add(nums[i])
+        }
+        console.log(avltree.isBST());
+        console.log(avltree.isBalanced());
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
