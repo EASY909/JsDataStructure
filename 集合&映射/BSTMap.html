@@ -110,6 +110,7 @@
                 }
                 return null;
             }
+
             _remove(node, key) {
 
                 if (node == null) {
@@ -152,6 +153,30 @@
                     return successor;
                 }
             }
+
+            removeMin() {
+                let min = this.minmum();
+
+
+                this.root = this._removeMin(this.root);
+
+
+                return min;
+            }
+
+            _removeMin(node) {
+                if (node.left == null) {
+                    let rightNode = node.right;
+                    node.right = null;
+                    this.size--;
+                    return rightNode;
+                }
+                node.left = this._removeMin(node.left);
+
+                return node;
+
+            }
+
         }
 
         let arr = [{
@@ -175,9 +200,6 @@
         // set.remove(1);
         console.log(map.get("1"));
         console.log(map.getSize());
-
-
-
     </script>
 </head>
 

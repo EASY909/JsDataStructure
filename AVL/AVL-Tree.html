@@ -46,20 +46,20 @@
                     this.root = new Node(key, value);
                     this.size++;
                 } else {
-                    
-                    this._add(key,value, this.root)
+
+                    this._add(key, value, this.root)
                 }
-               
+
             }
             _add(key, value, node) {
-               
+
                 if (node == null) {
                     this.size++;
-                 
+
                     return new Node(key, value)
                 }
 
-               
+
                 if (key < node.key) {
                     node.left = this._add(key, value, node.left)
                 } else if (key > node.key) {
@@ -70,15 +70,33 @@
 
                 //更新height
                 node.height = 1 + Math.max(this._getHeight(node.left), this._getHeight(node.right))
-               
+
                 //平衡因子
                 let balancefactor = this._getBalanceFactor(node);
                 if (Math.abs(balancefactor) > 1) {
                     console.log("平衡因子：" + balancefactor);
                 }
-                
+
 
                 //维护平衡
+                //LL
+                if (balancefactor > 1 && this._getBalanceFactor(node.left) >= 0) {
+                    return this.rightRotate(node);
+                }
+                //RR
+                if (balancefactor < -1 && this._getBalanceFactor(node.right) <= 0) {
+                    return this.leftRotate(node);
+                }
+                //LR
+                if (balancefactor > 1 && this._getBalanceFactor(node.left) < 0) {
+                    node.left = this.leftRotate(node.left);
+                    return this.rightRotate(node);
+                }
+                //RL
+                if (balancefactor < -1 && this._getBalanceFactor(node.right) > 0) {
+                    node.right = this.rightRotate(node.right);
+                    return this.leftRotate(node);
+                }
                 return node;
 
 
@@ -98,184 +116,171 @@
                 if (node == null) {
                     return null
                 }
-               
-                this._inOrder(node.left,keys)
+
+                this._inOrder(node.left, keys)
                 keys.push(node.key)
-                this._inOrder(node.right,keys);
+                this._inOrder(node.right, keys);
             }
 
-            isBalanced(){
+            isBalanced() {
                 return this._isBalanced(this.root);
             }
-            _isBalanced(node){
-                if(node==null){
+            _isBalanced(node) {
+                if (node == null) {
                     return true;
                 }
 
-                let balancefactor=this._getBalanceFactor(node);
-                if(Math.abs(balancefactor)>1){
+                let balancefactor = this._getBalanceFactor(node);
+                if (Math.abs(balancefactor) > 1) {
                     return false;
                 }
 
-                return this._isBalanced(node.left)&&this._isBalanced(node.right)
+                return this._isBalanced(node.left) && this._isBalanced(node.right)
             }
-            contains(e) {
-                _contains(this.root, e)
+            /**     右旋转
+                    // 对节点y进行向右旋转操作，返回旋转后新的根节点x
+                    //        y                              x
+                    //       / \                           /   \
+                    //      x   T4     向右旋转 (y)        z     y
+                    //     / \       - - - - - - - ->    / \   / \
+                    //    z   T3                       T1  T2 T3 T4
+                    //   / \
+                    // T1   T2
+            **/
+            rightRotate(y) {
+                let x = y.left;
+                let T3 = x.right;
+                x.right = y;
+                y.left = T3;
+
+                //更新高度
+                y.height = Math.max(this._getHeight(y.left), this._getHeight(y.right)) + 1;
+                x.height = Math.max(this._getHeight(x.left), this._getHeight(x.right)) + 1;
+                return x;
             }
-            _contains(node, e) {
+
+            // 对节点y进行向左旋转操作，返回旋转后新的根节点x
+            //    y                             x
+            //  /  \                          /   \
+            // T1   x      向左旋转 (y)       y     z
+            //     / \   - - - - - - - ->   / \   / \
+            //   T2  z                     T1 T2 T3 T4
+            //      / \
+            //     T3 T4
+
+            leftRotate(y) {
+                let x = y.right;
+                let T2 = x.left;
+                x.left = y;
+                y.right = T2;
+
+                //更新高度
+                y.height = Math.max(this._getHeight(y.left), this._getHeight(y.right)) + 1;
+                x.height = Math.max(this._getHeight(x.left), this._getHeight(x.right)) + 1;
+                return x;
+            }
+            _getNode(node, key) {
                 if (node == null) {
-                    return false
+                    return null;
                 }
 
-                if (node.e == e) {
-                    return true;
-                } else if (node.e > e) {
-                    _contains(node.left, e)
+                if (node.key == key) {
+                    return node
+                } else if (key < node.key) {
+                    return this._getNode(node.left, key)
                 } else {
-                    _contains(node.right, e)
+                    return this._getNode(node.right, key)
                 }
             }
-
-            levelOrder() {
-                let queue = []; //每次出队时，判断其左右孩子是不是为空
-
-                queue.push(this.root)
-                while (queue.length != 0) {
-                    let delet = queue.shift();
-                    console.log(delet.e);
-
-                    if (delet.left != null) {
-                        queue.push(delet.left)
-                    }
-                    if (delet.right != null) {
-                        queue.push(delet.right)
-                    }
+            remove(key) {
+                let node = this._getNode(this.root, key);
+                if (node != null) {
+                    this.root = this._remove(this.root, key)
+                    return node.value;
                 }
+                return null;
             }
-
-            minmum() {
-                if (this.size == 0) {
-                    throw new Error("二叉树节点为0")
-                }
-
-                return this._minmum(this.root).e
-            }
-            _minmum(node) {
-                let cur = node;
-
-                while (cur.left != null) {
-                    cur = cur.left;
-                }
-
-                return cur;
-            }
-
-            maxmum() {
-                if (this.size == 0) {
-                    throw new Error("二叉树节点为0")
-                }
-
-                return this._maxmum(this.root).e
-            }
-            _maxmum(node) {
-                let cur = node;
-
-                while (cur.right != null) {
-                    cur = cur.right;
-                }
-
-                return cur;
-            }
-
-            removeMin() {
-                let min = this.minmum();
-
-
-                this.root = this._removeMin(this.root);
-
-
-                return min;
-            }
-
-            _removeMin(node) {
-                if (node.left == null) {
-                    let rightNode = node.right;
-                    node.right = null;
-                    this.size--;
-                    return rightNode;
-                }
-                node.left = this._removeMin(node.left);
-
-                return node;
-
-            }
-
-            removeMax() {
-                let max = this.maxmum();
-
-                this.root = this._removeMax(this.root);
-                return max;
-            }
-
-            _removeMax(node) {
-                if (node.right == null) {
-                    let leftNode = node.left;
-                    node.left = null;
-                    this.size--;
-                    return leftNode;
-                }
-                node.right = this._removeMax(node.right);
-
-                return node;
-
-            }
-
-            remove(e) {
-                this.root = this._remove(this.root, e)
-            }
-            _remove(node, e) {
+            _remove(node, key) {
 
                 if (node == null) {
                     return null;
                 }
 
-                if (e < node.e) {
-                    node.left = _remove(node.left, e);
+                let retNode;
+                if (key < node.key) {
+                    node.left = _remove(node.left, key);
+                    retNode = node
 
-                    return node;
-                } else if (e > node.e) {
-                    node.right = _remove(node.right, e);
+                } else if (key > node.key) {
+                    node.right = _remove(node.right, key);
+                    retNode = node
 
-                    return node;
-                } else { //e==node.e
+                } else { //key==node.key
                     //待删除节点左子树为空
                     if (node.left == null) {
                         let rightNode = node.right;
                         node.right = null;
                         this.size--;
-                        return rightNode;
+                        retNode = rightNode;
                     }
                     //待删除节点右子树为空
-                    if (node.right == null) {
+                    else if (node.right == null) {
                         let leftNode = node.left;
                         node.left = null;
                         this.size--;
-                        return leftNode;
+                        retNode = leftNode;
+                    } else {
+
+                        //待删除节点左右子树都不空，找到待删除节点的右子树中的最小节点，用这个节点顶替待删除节点
+                        //或者找到待删除节点的左子树中的最大节点，用这个节点顶替待删除节点
+                        let successor = this.minmum(node.right);
+
+                        successor.right = this.remove(node.right, successor.key);
+                        successor.left = node.left;
+
+                        node.left = null;
+                        node.right = null;
+
+                        retNode = successor;
                     }
-
-                    //待删除节点左右子树都不空，找到待删除节点的右子树中的最小节点，用这个节点顶替待删除节点
-                    //或者找到待删除节点的左子树中的最大节点，用这个节点顶替待删除节点
-                    let successor = this.minmum(node.right);
-
-                    successor.right = this._removeMin(node.right);
-                    successor.left = node.left;
-
-                    node.left = null;
-                    node.right = null;
-
-                    return successor;
                 }
+                 
+                if(retNode ==null){
+                    return null;
+                }
+                retNode.height = 1 + Math.max(this._getHeight(retNode.left), this._getHeight(retNode.right))
+
+                //平衡因子
+                let balancefactor = this._getBalanceFactor(retNode);
+                if (Math.abs(balancefactor) > 1) {
+                    console.log("平衡因子：" + balancefactor);
+                }
+
+
+                //维护平衡
+                //LL
+                if (balancefactor > 1 && this._getBalanceFactor(retNode.left) >= 0) {
+                    return this.rightRotate(retNode);
+                }
+                //RR
+                if (balancefactor < -1 && this._getBalanceFactor(retNode.right) <= 0) {
+                    return this.leftRotate(retNode);
+                }
+                //LR
+                if (balancefactor > 1 && this._getBalanceFactor(retNode.left) < 0) {
+                    retNode.left = this.leftRotate(retNode.left);
+                    return this.rightRotate(retNode);
+                }
+                //RL
+                if (balancefactor < -1 && this._getBalanceFactor(retNode.right) > 0) {
+                    retNode.right = this.rightRotate(retNode.right);
+                    return this.leftRotate(retNode);
+                }
+                return retNode;
             }
+
+
+
 
         }
 
@@ -287,6 +292,10 @@
         for (let i = 0; i < nums.length; i++) {
             avltree.add(nums[i])
         }
+        console.log(avltree.isBST());
+        console.log(avltree.isBalanced());
+
+        avltree.remove(2)
         console.log(avltree.isBST());
         console.log(avltree.isBalanced());
     </script>
