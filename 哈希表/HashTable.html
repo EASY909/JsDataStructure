@@ -1,0 +1,131 @@
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    const capacity = [53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593,
+        49157, 98317, 196613, 393241, 786433, 1572869, 3145739, 6291469,
+        12582917, 25165843, 50331653, 100663319, 201326611, 402653189, 805306457, 1610612741];
+    const upperTol = 10;
+    const lowerTol = 2;
+    let capacityIndex = 0;
+
+    class HashTable {
+        constructor() {
+            this.hashTable = Array(M);
+            this.M = capacity[capacityIndex];
+            this.size = 0;
+            for (let i = 0; i < M; i++) {
+                this.hashTable[i] = new Map()
+            }
+        }
+
+        add(key, value) {
+            let map = this.hashTable[this.hash(key)];
+            if (map.has(key)) {
+                map.set(key, value)
+            } else {
+                map.set(key, value);
+                this.size++;
+            }
+
+            if (this.size >= upperTol * this.M && capacityIndex + 1 < capacity.length) {
+                capacityIndex++;
+                this.resize(capacity[capacityIndex])
+            }
+        }
+
+        remove(key) {
+            let map = this.hashTable[this.hash(key)],
+                ret = null;
+
+            if (map.has(key)) {
+                ret = map.delete(key);
+                this.size--
+            }
+
+            if (this.size < lowerTol * this.M && capacityIndex - 1 >= 0) {
+                capacityIndex--;
+                this.resize(capacity[capacityIndex])
+            }
+            return ret
+        }
+
+        set(key, value) {
+            let map = this.hashTable[this.hash(key)];
+            if (!map.has(key)) {
+                throw new Error(`${key} doesn't exist!`)
+            }
+            map.set(key, value)
+        }
+
+        hash(key) {
+            let str = null;
+            switch (this._type(key)) {
+                case 'string':
+                    str = key;
+                    break;
+                case 'null':
+                case 'undefined':
+                case 'number':
+                case 'boolean':
+                    str = key + ''
+            }
+
+            return (this._hashCode(str) & 0x7fffffff) % this.M
+        }
+
+        contains(key) {
+            return this.hashTable[this.hash(key)].has(key)
+        }
+
+        get(key) {
+            return this.hashTable[this.hash(key)].get(key)
+        }
+
+        _type(key) {
+            let str = Object.prototype.toString.call(key),
+                type = str.slice(8, -1).toLowerCase();
+
+            return type
+        }
+
+        resize(newM) {
+            let newHashTable = Array(newM);
+            for (let i = 0; i < newM; i++) {
+                newHashTable[i] = new Map()
+            }
+
+            let oldM = this.M;
+            this.M = newM;
+            for (let i = 0; i < oldM; i++) {
+                let map = this.hashTable[i];
+                for (let key of map.keys()) {
+                    newHashTable[this.hash[key]].set(key, map.get(key))
+                }
+            }
+
+            this.hashTable = newHashTable
+        }
+
+        //辅助函数
+        _hashCode(str) {
+            let h = 0, off = 0;
+            let len = str.length;
+            for (let i = 0; i < len; i++) {
+                h = 31 * h + str.charCodeAt(off++);
+            }
+            let t = -2147483648 * 2;
+            while (h > 2147483647) {
+                h += t
+            }
+            return h
+        }
+    }
+</script>
+</body>
+</html>
